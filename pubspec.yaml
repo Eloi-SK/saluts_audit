@@ -42,3 +42,6 @@ flutter:
   #       - asset: fonts/TrajanPro.ttf
   #       - asset: fonts/TrajanPro_Bold.ttf
   #         weight: 700
+
+scripts:
+  mobx: flutter pub run build_runner watch --delete-conflicting-outputs
