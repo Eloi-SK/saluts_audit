@@ -1,15 +1,64 @@
 import 'package:mobx/mobx.dart';
+import 'package:salutis_audit/app/utils/errors/domain_error.dart';
+import 'package:salutis_audit/app/utils/validations/validations.dart';
+
+import '../../services/shared_local_storage_service.dart';
+import 'repository/auth_repository.dart';
 
 part 'auth_store.g.dart';
 
 class AuthStore = _AuthStoreBase with _$AuthStore;
 abstract class _AuthStoreBase with Store {
+  final AuthRepository _repository;
+  final SharedLocalStorageService _storage;
+
+  _AuthStoreBase(this._repository, this._storage);
+  @observable
+  bool isLoading = false;
 
   @observable
-  int value = 0;
+  String username = '';
+
+  @observable
+  String password = '';
+
+  @observable
+  String? mainError;
+
+  @observable
+  String? usernameError;
+
+  @observable
+  String? passwordError;
+
+  @computed
+  bool get isFormValid => usernameError == null && passwordError == null &&
+  username != '' && password != '';
 
   @action
-  void increment() {
-    value++;
-  } 
+  validateUsername(String username) {
+    this.username = username;
+    usernameError = isNotEmptyValidationText(username);
+  }
+
+  @action
+  validatePassword(String password) {
+    this.password = password;
+    passwordError = isNotEmptyValidationText(password);
+  }
+
+  @action
+  Future login() async {
+    isLoading = true;
+    try {
+      final token = await _repository.login(username, password);
+
+      await _storage.put('token', token);
+    } on DomainError catch (e) {
+      mainError = e.description;
+    } finally {
+      isLoading = false;
+    }
+    
+  }
 }
