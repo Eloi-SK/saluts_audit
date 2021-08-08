@@ -16,7 +16,7 @@ class AuthRepository extends Disposable {
       ),
     );
 
-    if (response.data['status'] == 'sucesso') {
+    if (response.data['sucesso'] == 'true') {
       return response.data['token'];
     } else {
       throw DomainError.invalidCredentials;
