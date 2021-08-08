@@ -1,8 +1,7 @@
 import 'package:mobx/mobx.dart';
-import 'package:salutis_audit/app/utils/errors/domain_error.dart';
-import 'package:salutis_audit/app/utils/validations/validations.dart';
 
 import '../../services/shared_local_storage_service.dart';
+import '../../utils/utils.dart';
 import 'repository/auth_repository.dart';
 
 part 'auth_store.g.dart';
@@ -13,6 +12,9 @@ abstract class _AuthStoreBase with Store {
   final SharedLocalStorageService _storage;
 
   _AuthStoreBase(this._repository, this._storage);
+  @observable
+  bool isLogged = false;
+  
   @observable
   bool isLoading = false;
 
@@ -52,8 +54,8 @@ abstract class _AuthStoreBase with Store {
     isLoading = true;
     try {
       final token = await _repository.login(username, password);
-
       await _storage.put('token', token);
+      isLogged = true;
     } on DomainError catch (e) {
       mainError = e.description;
     } finally {

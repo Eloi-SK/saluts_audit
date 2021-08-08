@@ -17,6 +17,21 @@ mixin _$AuthStore on _AuthStoreBase, Store {
               name: '_AuthStoreBase.isFormValid'))
           .value;
 
+  final _$isLoggedAtom = Atom(name: '_AuthStoreBase.isLogged');
+
+  @override
+  bool get isLogged {
+    _$isLoggedAtom.reportRead();
+    return super.isLogged;
+  }
+
+  @override
+  set isLogged(bool value) {
+    _$isLoggedAtom.reportWrite(value, super.isLogged, () {
+      super.isLogged = value;
+    });
+  }
+
   final _$isLoadingAtom = Atom(name: '_AuthStoreBase.isLoading');
 
   @override
@@ -142,6 +157,7 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   @override
   String toString() {
     return '''
+isLogged: ${isLogged},
 isLoading: ${isLoading},
 username: ${username},
 password: ${password},
