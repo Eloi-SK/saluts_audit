@@ -21,7 +21,9 @@ class AuthPageState extends State<AuthPage> {
   void didChangeDependencies() {
     super.didChangeDependencies();
 
+    reaction<bool>((_) => store.isLoading, whenIsLoadingChanged);
     reaction<bool>((_) => store.isLogged, whenIsLoggedChanged);
+    reaction<String>((_) => store.mainError!, whenMainChanged);
   }
 
   @override
@@ -66,7 +68,7 @@ class AuthPageState extends State<AuthPage> {
     );
   }
 
-  void whenIsLoadingChange(bool isLoading) {
+  void whenIsLoadingChanged(bool isLoading) {
     if (isLoading) {
       showLoading(context);
     } else {
@@ -80,6 +82,7 @@ class AuthPageState extends State<AuthPage> {
     }
   }
 
+  void whenMainChanged(String? error) {
     if (error != null) {
       showMessage(context, error, SnackMessageType.error);
     }
