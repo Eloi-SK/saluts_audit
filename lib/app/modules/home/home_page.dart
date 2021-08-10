@@ -11,6 +11,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends ModularState<HomePage, HomeStore> {
+
+  @override
+  void initState() {
+    super.initState();
+
+    store.fetchForms();
+  }
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
