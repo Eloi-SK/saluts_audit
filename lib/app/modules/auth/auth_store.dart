@@ -50,7 +50,7 @@ abstract class _AuthStoreBase with Store {
   }
 
   @action
-  Future login() async {
+  Future<void> login() async {
     isLoading = true;
     try {
       final token = await _repository.login(username, password);

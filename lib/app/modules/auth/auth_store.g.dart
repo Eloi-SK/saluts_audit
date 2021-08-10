@@ -125,7 +125,7 @@ mixin _$AuthStore on _AuthStoreBase, Store {
   final _$loginAsyncAction = AsyncAction('_AuthStoreBase.login');
 
   @override
-  Future<dynamic> login() {
+  Future<void> login() {
     return _$loginAsyncAction.run(() => super.login());
   }
 
