@@ -6,9 +6,16 @@ class HomeStore = HomeStoreBase with _$HomeStore;
 
 abstract class HomeStoreBase with Store {
   @observable
-  int counter = 0;
+  ObservableList<bool> selections = ObservableList<bool>.of([true, false, false]);
 
-  Future<void> increment() async {
-    counter = counter + 1;
+  @action
+  Future<void> select(int index) async {
+    for (int i = 0; i < selections.length; i++) {
+      if (index == i) {
+        selections[i] = true;
+      } else {
+        selections[i] = false;
+      }
+    }
   }
 }
