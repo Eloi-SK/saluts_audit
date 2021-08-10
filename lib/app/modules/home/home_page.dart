@@ -30,42 +30,47 @@ class _HomePageState extends ModularState<HomePage, HomeStore> {
         children: [
           buildToggleButtons(),
           Expanded(
-            child: ListView.builder(
-              itemCount: 20,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 11),
-                  child: Card(
-                    child: Padding(
-                      padding: const EdgeInsets.all(15),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            'Visita de Enfermagem',
-                            style: Theme.of(context).textTheme.subtitle1
-                          ),
-                          Text(
-                            'Hospital São Lucas',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                          Text(
-                            'OPERADORA: HRPAUDIT',
-                            style: Theme.of(context).textTheme.caption,
-                          ),
-                          SizedBox(height: 10),
-                          Text('RAIMUNDO LUIZ BARROS OLIVEIRA'),
-                          Row(
+            child: Observer(
+              builder: (_) {
+                return ListView.builder(
+                  itemCount: store.forms.length,
+                  itemBuilder: (context, index) {
+                    final form = store.forms[index];
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 11),
+                      child: Card(
+                        child: Padding(
+                          padding: const EdgeInsets.all(15),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text('Idade: 50'),
-                              SizedBox(width: 10),
-                              Text('Sexo: Masulino'),
+                              Text(
+                                form.nome,
+                                style: Theme.of(context).textTheme.subtitle1
+                              ),
+                              Text(
+                                form.hospital,
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                              Text(
+                                'OPERADORA: ${form.operadora}',
+                                style: Theme.of(context).textTheme.caption,
+                              ),
+                              SizedBox(height: 10),
+                              Text(form.beneficiario),
+                              Row(
+                                children: [
+                                  Text('Idade: ${form.idade}'),
+                                  SizedBox(width: 10),
+                                  Text('Sexo: ${form.sexo}'),
+                                ],
+                              )
                             ],
-                          )
-                        ],
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
+                    );
+                  }
                 );
               }
             )
