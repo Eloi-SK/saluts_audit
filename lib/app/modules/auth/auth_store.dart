@@ -61,6 +61,11 @@ abstract class _AuthStoreBase with Store {
     } finally {
       isLoading = false;
     }
-    
+  }
+
+  @action
+  Future<void> logout() async {
+    await _storage.delete('token');
+    isLogged = false;
   }
 }
