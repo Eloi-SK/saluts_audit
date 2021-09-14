@@ -39,25 +39,57 @@ mixin _$HomeStore on HomeStoreBase, Store {
     });
   }
 
+  final _$isLoadingAtom = Atom(name: 'HomeStoreBase.isLoading');
+
+  @override
+  bool get isLoading {
+    _$isLoadingAtom.reportRead();
+    return super.isLoading;
+  }
+
+  @override
+  set isLoading(bool value) {
+    _$isLoadingAtom.reportWrite(value, super.isLoading, () {
+      super.isLoading = value;
+    });
+  }
+
   final _$fetchFormsAsyncAction = AsyncAction('HomeStoreBase.fetchForms');
 
   @override
-  Future<void> fetchForms() {
-    return _$fetchFormsAsyncAction.run(() => super.fetchForms());
+  Future<void> fetchForms({bool refresh = false}) {
+    return _$fetchFormsAsyncAction
+        .run(() => super.fetchForms(refresh: refresh));
   }
 
-  final _$selectAsyncAction = AsyncAction('HomeStoreBase.select');
+  final _$selectStatusAsyncAction = AsyncAction('HomeStoreBase.selectStatus');
 
   @override
-  Future<void> select(int index) {
-    return _$selectAsyncAction.run(() => super.select(index));
+  Future<void> selectStatus(int index) {
+    return _$selectStatusAsyncAction.run(() => super.selectStatus(index));
+  }
+
+  final _$HomeStoreBaseActionController =
+      ActionController(name: 'HomeStoreBase');
+
+  @override
+  void changeValue(
+      String formId, String groupId, String questionId, String newValue) {
+    final _$actionInfo = _$HomeStoreBaseActionController.startAction(
+        name: 'HomeStoreBase.changeValue');
+    try {
+      return super.changeValue(formId, groupId, questionId, newValue);
+    } finally {
+      _$HomeStoreBaseActionController.endAction(_$actionInfo);
+    }
   }
 
   @override
   String toString() {
     return '''
 forms: ${forms},
-selections: ${selections}
+selections: ${selections},
+isLoading: ${isLoading}
     ''';
   }
 }
